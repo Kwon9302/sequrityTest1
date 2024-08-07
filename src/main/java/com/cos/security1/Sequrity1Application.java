@@ -1,4 +1,4 @@
-package com.cos.sequrity1;
+package com.cos.security1;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

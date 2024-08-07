@@ -1,0 +1,26 @@
+# ?? ?? ??
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+# database ?? ??
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/security?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: dhgusdl1**
+
+  # spring data jpa ??
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect # ?? SQL? ??? ???.
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+      format_sql: true
