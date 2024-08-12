@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Iterator;
 
-@Controller // view를 return하겠다.
+@Controller // view를 return하겠다. <-> @Rescontroller JSON값으로 변환(+ HTTP 응답값) 전송
 @RequiredArgsConstructor
 public class IndexController {
 
