@@ -49,8 +49,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             System.out.println("우리는 구글과 네이버만 지원해요 ㅎㅎ");
         }
 
-        //System.out.println("oAuth2UserInfo.getProvider() : " + oAuth2UserInfo.getProvider());
-        //System.out.println("oAuth2UserInfo.getProviderId() : " + oAuth2UserInfo.getProviderId());
+        System.out.println("oAuth2UserInfo.getProvider() : " + oAuth2UserInfo.getProvider());
+        System.out.println("oAuth2UserInfo.getProviderId() : " + oAuth2UserInfo.getProviderId());
+
         Optional<User> userOptional =
                 userRepository.findByProviderAndProviderId(oAuth2UserInfo.getProvider(), oAuth2UserInfo.getProviderId());
 

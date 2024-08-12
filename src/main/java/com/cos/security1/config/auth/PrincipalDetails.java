@@ -27,7 +27,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         this.attributes = attributes;
     }
 
-    public User getUser() {
+    public User getUser(){
         return user;
     }
 
@@ -63,7 +63,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> collet = new ArrayList<GrantedAuthority>();
+        Collection<GrantedAuthority> collet = new ArrayList<>();
         collet.add(()->{ return user.getRole();});
         return collet;
     }
