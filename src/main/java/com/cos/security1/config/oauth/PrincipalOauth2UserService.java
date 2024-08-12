@@ -41,10 +41,13 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         OAuth2UserInfo oAuth2UserInfo = null;
         if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
             System.out.println("구글 로그인 요청~~");
-            oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
+            oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes()); // 의존성 주입
+            System.out.println("oAuth2UserInfo : " + oAuth2UserInfo);
+
         } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")){
             System.out.println("네이버 로그인 요청~~");
-            oAuth2UserInfo = new NaverUserInfo((Map)oAuth2User.getAttributes().get("response"));
+            oAuth2UserInfo = new NaverUserInfo(oAuth2User.getAttributes()); // 의존성 주입
+            System.out.println("oAuth2UserInfo : " + oAuth2UserInfo);
         } else {
             System.out.println("우리는 구글과 네이버만 지원해요 ㅎㅎ");
         }
@@ -57,12 +60,14 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         User user;
         if (userOptional.isPresent()) {
+            System.out.println("DB에 정보가 있음 ==> user update실시");
             user = userOptional.get();
             // user가 존재하면 update 해주기
             user.setEmail(oAuth2UserInfo.getEmail());
             userRepository.save(user);
         } else {
             // user의 패스워드가 null이기 때문에 OAuth 유저는 일반적인 로그인을 할 수 없음.
+            System.out.println("user not found ==> oAuthUser정보 db 저장");
             user = User.builder()
                     .username(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId())
                     .email(oAuth2UserInfo.getEmail())

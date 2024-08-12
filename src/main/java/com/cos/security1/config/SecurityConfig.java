@@ -27,7 +27,9 @@ public class SecurityConfig {
                         .requestMatchers("/user/**").authenticated() // /user는 인증만 되면 들어갈 수 있는 주소.
                         .requestMatchers("/admin/**").hasRole("ADMIN") // //admin으로 들어오면 ADMIN권한이 있는 사람만 들어올 수 있음
                         .anyRequest().permitAll() // 그리고 나머지 url은 전부 권한을 허용해준다.
+
                 )
+
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/loginProc") //login 주소가 호출되면 security가 낚아채서 로그인을 해준다.
@@ -39,6 +41,7 @@ public class SecurityConfig {
                                         .userService(principalOauth2UserService))
                         )
                 );
+        System.out.println("SecurityConfig.filterChain");
         return http.build();
     }
 

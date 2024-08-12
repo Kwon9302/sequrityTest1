@@ -28,36 +28,43 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     }
 
     public User getUser(){
+        System.out.println("PrincipalDetails.getUser");
         return user;
     }
 
     @Override
     public String getPassword() {
+        System.out.println("PrincipalDetails.getPassword");
         return user.getPassword();
     }
 
     @Override
     public String getUsername() {
+        System.out.println("PrincipalDetails.getUsername");
         return user.getUsername();
     }
 
     @Override
     public boolean isAccountNonExpired() {
+        System.out.println("PrincipalDetails.isAccountNonExpired");
         return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
+        System.out.println("PrincipalDetails.isAccountNonLocked");
         return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
+        System.out.println("PrincipalDetails.isCredentialsNonExpired");
         return true;
     }
 
     @Override
     public boolean isEnabled() {
+        System.out.println("PrincipalDetails.isEnabled");
         return true;
     }
 
@@ -65,18 +72,21 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collet = new ArrayList<>();
         collet.add(()->{ return user.getRole();});
+        System.out.println("PrincipalDetails.getAuthorities" + collet.toString());
         return collet;
     }
 
     // 리소스 서버로 부터 받는 회원정보
     @Override
     public Map<String, Object> getAttributes() {
+        System.out.println("PrincipalDetails.getAttributes");
         return attributes;
     }
 
     // User의 PrimaryKey
     @Override
     public String getName() {
+        System.out.println("PrincipalDetails.getName");
         return user.getId()+"";
     }
 }
