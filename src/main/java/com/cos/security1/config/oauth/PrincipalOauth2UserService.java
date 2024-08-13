@@ -13,19 +13,19 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
-
+    // DefaultOAuth2UserService를 상속받아 naver,google로그인과 구현을 위한 커스터마이징을 위한 클래스이다.
     private final UserRepository userRepository;
 
     // userRequest 는 code를 받아서 accessToken을 응답 받은 객체
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2User oAuth2User = super.loadUser(userRequest); // google의 회원 프로필 조회
+        // 로그인시 바로 유저 정보가 들어온다.
+        OAuth2User oAuth2User = super.loadUser(userRequest);
 
         // code를 통해 구성한 정보
         System.out.println("userRequest clientRegistration : " + userRequest.getClientRegistration());
@@ -34,13 +34,14 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         return processOAuth2User(userRequest, oAuth2User);
     }
-
+        // OAuth2 요청으로 들어온 정보에따라 정보 가공
     private OAuth2User processOAuth2User(OAuth2UserRequest userRequest, OAuth2User oAuth2User) {
 
         // Attribute를 파싱해서 공통 객체로 묶는다. 관리가 편함.
         OAuth2UserInfo oAuth2UserInfo = null;
         if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
             System.out.println("구글 로그인 요청~~");
+                                               // oAuth2User는 Map방식이다.
             oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes()); // 의존성 주입
             System.out.println("oAuth2UserInfo : " + oAuth2UserInfo);
 
@@ -55,6 +56,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         System.out.println("oAuth2UserInfo.getProvider() : " + oAuth2UserInfo.getProvider());
         System.out.println("oAuth2UserInfo.getProviderId() : " + oAuth2UserInfo.getProviderId());
 
+        // userOptional을 통해 naver, google로그인에 성공한 user들을 db에 저장한다.
         Optional<User> userOptional =
                 userRepository.findByProviderAndProviderId(oAuth2UserInfo.getProvider(), oAuth2UserInfo.getProviderId());
 
@@ -69,15 +71,15 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             // user의 패스워드가 null이기 때문에 OAuth 유저는 일반적인 로그인을 할 수 없음.
             System.out.println("user not found ==> oAuthUser정보 db 저장");
             user = User.builder()
+                    // provider + providerId를 조합해서 name으로 저장
                     .username(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId())
                     .email(oAuth2UserInfo.getEmail())
-                    .role("ROLE_USER")
+                    .role("ROLE_USER") // 가입시 기본 role 부여
                     .provider(oAuth2UserInfo.getProvider())
                     .providerId(oAuth2UserInfo.getProviderId())
                     .build();
             userRepository.save(user);
         }
-
         return new PrincipalDetails(user, oAuth2User.getAttributes());
     }
 }

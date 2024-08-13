@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+// 여기는 OAuth2방식이 아닌 일반 회원 로그인을 진행할때!
 public class PrincipalDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;

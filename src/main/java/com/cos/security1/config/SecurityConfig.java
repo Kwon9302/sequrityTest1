@@ -23,21 +23,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                // authorizeHttpRequests : 요청에 대한 권한 부여 규칙을 설정한다.
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/user/**").authenticated() // /user는 인증만 되면 들어갈 수 있는 주소.
                         .requestMatchers("/admin/**").hasRole("ADMIN") // //admin으로 들어오면 ADMIN권한이 있는 사람만 들어올 수 있음
                         .anyRequest().permitAll() // 그리고 나머지 url은 전부 권한을 허용해준다.
-
                 )
-
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/loginProc") //login 주소가 호출되면 security가 낚아채서 로그인을 해준다.
-                        .defaultSuccessUrl("/")
+                        .loginPage("/login") // "/login" 경로를 로그인페이지로 설정한다. 인증이 필요할 경우 이 페이지로 리디렉션한다.
+
+                        //로그인 폼의 action속성에서 지정된 url을 처리한다.
+                        .loginProcessingUrl("/loginProc") //  "/loginProc" 주소가 호출되면 security가 낚아채서 로그인을 해준다.
+                        .defaultSuccessUrl("/") // 로그인 성공후 리디렉션할 기본 url주 -> Controller에서 getmapping("/")
                 )
                 .oauth2Login((oauth2Login -> oauth2Login
                                 .loginPage("/login") // google로그인이 된 후에 후처리가 필요함
                                 .userInfoEndpoint(userInfo -> userInfo
+                                        // 받은 사용자 정보를 처리하는 principalOauth2UserService로 넘겨 정보를 처리한다.
                                         .userService(principalOauth2UserService))
                         )
                 );
