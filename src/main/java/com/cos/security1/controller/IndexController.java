@@ -1,6 +1,7 @@
 package com.cos.security1.controller;
 
 import com.cos.security1.config.auth.PrincipalDetails;
+import com.cos.security1.config.exception.UnauthorizedUserException;
 import com.cos.security1.model.User;
 import com.cos.security1.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,7 +26,13 @@ public class IndexController {
 
     @GetMapping({ "", "/" })
     public @ResponseBody String index() {
-        return "인덱스 페이지입니다.";
+        return "로그인 성공";
+    }
+
+    @GetMapping("/reject")
+    public @ResponseBody String reject() {
+        System.out.println("예외 발생시 reject로 매핑");
+        return "놉";
     }
 
     @GetMapping("/user")

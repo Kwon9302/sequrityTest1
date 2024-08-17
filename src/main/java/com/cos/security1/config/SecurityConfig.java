@@ -1,5 +1,6 @@
 package com.cos.security1.config;
 
+import com.cos.security1.config.oauth.CustomAuthenticationEntryPoint;
 import com.cos.security1.config.oauth.PrincipalOauth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +22,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 // authorizeHttpRequests : 요청에 대한 권한 부여 규칙을 설정한다.
                 .authorizeHttpRequests(authorize -> authorize
@@ -29,6 +30,8 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN") // //admin으로 들어오면 ADMIN권한이 있는 사람만 들어올 수 있음
                         .anyRequest().permitAll() // 그리고 나머지 url은 전부 권한을 허용해준다.
                 )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customAuthenticationEntryPoint))
                 .formLogin(form -> form
                         .loginPage("/login") // "/login" 경로를 로그인페이지로 설정한다. 인증이 필요할 경우 이 페이지로 리디렉션한다.
 

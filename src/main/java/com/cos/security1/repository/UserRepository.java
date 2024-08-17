@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Integer> {
     // SELECT * FROM user WHERE username = ?1
     User findByUsername(String username);
-    User findByEmail(String email);
+//    User findByName(String email);
 
     // SELECT * FROM user WHERE provider = ?1 and providerId = ?2
     Optional<User> findByProviderAndProviderId(String provider, String providerId);

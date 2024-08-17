@@ -30,6 +30,7 @@ public class User {
     // Oauth를 위 구성한 추가 필드 2개
     private String provider;
     private String providerId;
+
     @CreationTimestamp
     private Timestamp createDate;
 

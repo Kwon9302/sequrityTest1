@@ -1,6 +1,7 @@
 package com.cos.security1.config.oauth;
 
 import com.cos.security1.config.auth.PrincipalDetails;
+import com.cos.security1.config.exception.UnauthorizedUserException;
 import com.cos.security1.config.oauth.provider.GoogleUserInfo;
 import com.cos.security1.config.oauth.provider.KakaoUserInfo;
 import com.cos.security1.config.oauth.provider.NaverUserInfo;
@@ -63,27 +64,55 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         // userOptional을 통해 naver, google로그인에 성공한 user들을 db에 저장한다.
 //        Optional<User> userOptional =
 //                userRepository.findByProviderAndProviderId(oAuth2UserInfo.getProvider(), oAuth2UserInfo.getProviderId());
-                 User userEmail = userRepository.findByEmail(oAuth2UserInfo.getEmail());
+         User user = null;
+                     User userName = userRepository.findByUsername(oAuth2UserInfo.getName());
+                     if(userName == null) {
+                         System.out.println("예외처리 실행");
+                         throw new UnauthorizedUserException("안돼 안바꿔줘 바꿀생각없어");
+                     }
+                     System.out.println("userName : " + userName);
+                     System.out.println("userName.toString() : "+userName.toString());
+
+                     System.out.println("user not found ==> oAuthUser정보 db 저장");
+//                     user = User.builder()
+//                             .username(oAuth2UserInfo.getName())
+//                             .email(oAuth2UserInfo.getEmail())
+//                             .role("ROLE_USER") // 가입시 기본 role 부여
+//                             .provider(oAuth2UserInfo.getProvider())
+//                             .providerId(oAuth2UserInfo.getProviderId())
+//                             .build();
+                    userName.setEmail(oAuth2UserInfo.getEmail());
+                    userName.setProvider(oAuth2UserInfo.getProvider());
+                    userName.setProviderId(oAuth2UserInfo.getProviderId());
+                    userName.setRole("ROLE_USER"); // 예: Role 업데이트
+
+                     userRepository.save(userName);
+        return new PrincipalDetails(userName, oAuth2User.getAttributes());
+    }
+}
+
         // DB에 해당 email이 없을 경우 가입 불가.
 
 
-        User user = null;
-        if (userEmail == null) {
-            System.out.println("가입 권한이 없습니다");
-        } else {
-            //            // user의 패스워드가 null이기 때문에 OAuth 유저는 일반적인 로그인을 할 수 없음.
-            System.out.println("user not found ==> oAuthUser정보 db 저장");
-
-            user = User.builder()
-                    // provider + providerId를 조합해서 name으로 저장
-                    .username(oAuth2UserInfo.getName())
-                    .email(oAuth2UserInfo.getEmail())
-                    .role("ROLE_USER") // 가입시 기본 role 부여
-                    .provider(oAuth2UserInfo.getProvider())
-                    .providerId(oAuth2UserInfo.getProviderId())
-                    .build();
-            userRepository.save(user);
-        }
+//        User user = null;
+//        if (userName == null) {
+//            System.out.println("가입 권한이 없습니다");
+//            throw new UnauthorizedUserException("가입 권한이 없습니다");
+//
+//        } else {
+//            //            // user의 패스워드가 null이기 때문에 OAuth 유저는 일반적인 로그인을 할 수 없음.
+//            System.out.println("user not found ==> oAuthUser정보 db 저장");
+//
+//            user = User.builder()
+//                    // provider + providerId를 조합해서 name으로 저장
+//                    .username(oAuth2UserInfo.getName())
+//                    .email(oAuth2UserInfo.getEmail())
+//                    .role("ROLE_USER") // 가입시 기본 role 부여
+//                    .provider(oAuth2UserInfo.getProvider())
+//                    .providerId(oAuth2UserInfo.getProviderId())
+//                    .build();
+//            userRepository.save(user);
+//        }
 
         // User user;
 //        if (userOptional.isPresent()) {
@@ -106,6 +135,4 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 //                    .build();
 //            userRepository.save(user);
 //        }
-        return new PrincipalDetails(user, oAuth2User.getAttributes());
-    }
-}
+
