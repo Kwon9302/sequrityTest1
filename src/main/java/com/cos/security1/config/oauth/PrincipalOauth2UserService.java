@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
 @Service
@@ -64,29 +65,21 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         // userOptional을 통해 naver, google로그인에 성공한 user들을 db에 저장한다.
 //        Optional<User> userOptional =
 //                userRepository.findByProviderAndProviderId(oAuth2UserInfo.getProvider(), oAuth2UserInfo.getProviderId());
-         User user = null;
-                     User userName = userRepository.findByUsername(oAuth2UserInfo.getName());
-                     if(userName == null) {
-                         System.out.println("예외처리 실행");
-                         throw new UnauthorizedUserException("안돼 안바꿔줘 바꿀생각없어");
-                     }
-                     System.out.println("userName : " + userName);
-                     System.out.println("userName.toString() : "+userName.toString());
 
-                     System.out.println("user not found ==> oAuthUser정보 db 저장");
-//                     user = User.builder()
-//                             .username(oAuth2UserInfo.getName())
-//                             .email(oAuth2UserInfo.getEmail())
-//                             .role("ROLE_USER") // 가입시 기본 role 부여
-//                             .provider(oAuth2UserInfo.getProvider())
-//                             .providerId(oAuth2UserInfo.getProviderId())
-//                             .build();
-                    userName.setEmail(oAuth2UserInfo.getEmail());
-                    userName.setProvider(oAuth2UserInfo.getProvider());
-                    userName.setProviderId(oAuth2UserInfo.getProviderId());
-                    userName.setRole("ROLE_USER"); // 예: Role 업데이트
+        User userName = userRepository.findByUsername(oAuth2UserInfo.getName());
+        if(userName == null) {
+            System.out.println("예외처리 실행");
+            throw new UnauthorizedUserException("안돼 안바꿔줘 바꿀생각없어");
+            }
+        System.out.println("userName : " + userName);
+        System.out.println("userName.toString() : "+userName.toString());
 
-                     userRepository.save(userName);
+        System.out.println("user not found ==> oAuthUser정보 UPDATE");
+        userName.setEmail(oAuth2UserInfo.getEmail());
+        userName.setRole("ROLE_USER");
+        userName.setProvider(oAuth2UserInfo.getProvider());
+        userName.setProviderId(oAuth2UserInfo.getProviderId());
+        userRepository.save(userName);
         return new PrincipalDetails(userName, oAuth2User.getAttributes());
     }
 }

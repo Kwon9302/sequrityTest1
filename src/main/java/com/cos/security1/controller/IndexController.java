@@ -75,9 +75,9 @@ public class IndexController {
     @PostMapping("/joinProc")
     public String joinProc(User user) {
         System.out.println("회원가입 진행 : " + user);
-        String rawPassword = user.getPassword();
-        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
-        user.setPassword(encPassword);
+//        String rawPassword = user.getPassword();
+//        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
+//        user.setPassword(encPassword);
         user.setRole("ROLE_USER");
         userRepository.save(user);
         return "redirect:/";
