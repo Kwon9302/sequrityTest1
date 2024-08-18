@@ -29,15 +29,15 @@ spring:
       client:
         registration:
           google:
-            client-id: 402378485093-o15h5esjupkp09cnm1umc34gvqf49ikq.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 
+            client-secret: 
             scope:
               - email
               - profile
 
           naver:
-            client-id: DdLAVyyKdr9h06CPkyM5
-            client-secret: kfSyRGXN9t
+            client-id: 
+            client-secret: 
             scope:
               - name
               - email
@@ -48,7 +48,7 @@ spring:
             provider: naver
 
           kakao:
-            client-id: 49d956df1d142ec319a08d78e547f6a7
+            client-id: 
             scope:
               - profile_nickname
               - account_email
