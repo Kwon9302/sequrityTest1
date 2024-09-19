@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+// mustache dependencies사용을 위한 WebMvcConfig 커스텀 Class
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
