@@ -11,4 +11,10 @@
 
  - ServletFilter인터페이스  - GenericFilterBean  -  OncePerRequestFilter
  - GenericFilterBean : 다양한 필터 작업에 반복적으로 사용되는 Filter
- - OncePerRequestFilter : JWT인증, Session인증 등 하나의 요청 당 한 번만 실행되는 필터이다. 
+ - OncePerRequestFilter : JWT인증, Session인증 등 하나의 요청 당 한 번만 실행되는 필터이다.
+ - ==============================================================================
+ - DisableEncodeUrlFilter
+ - DefaultSecurityFilterChain에 기본 등록되는 필터로 가장 첫번째에 위치한다. -> 세션id가 인코딩되어 로그에 출력되는것을 방지
+ - -> http
+   .sessionManagement((manage) -> manage.disable());
+ - disable시에 encode메서드들은 그대로 url을 반환(원래값은 session값(인코딩한)을 포함)
