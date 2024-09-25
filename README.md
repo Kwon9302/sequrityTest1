@@ -13,8 +13,15 @@
  - GenericFilterBean : 다양한 필터 작업에 반복적으로 사용되는 Filter
  - OncePerRequestFilter : JWT인증, Session인증 등 하나의 요청 당 한 번만 실행되는 필터이다.
  - ==============================================================================
- - DisableEncodeUrlFilter
- - DefaultSecurityFilterChain에 기본 등록되는 필터로 가장 첫번째에 위치한다. -> 세션id가 인코딩되어 로그에 출력되는것을 방지
- - -> http
-   .sessionManagement((manage) -> manage.disable());
- - disable시에 encode메서드들은 그대로 url을 반환(원래값은 session값(인코딩한)을 포함)
+
+[//]: # ( - DisableEncodeUrlFilter)
+
+[//]: # ( - DefaultSecurityFilterChain에 기본 등록되는 필터로 가장 첫번째에 위치한다. -> 세션id가 인코딩되어 로그에 출력되는것을 방지)
+
+[//]: # ( - -> http)
+
+[//]: # (   .sessionManagement&#40;&#40;manage&#41; -> manage.disable&#40;&#41;&#41;;)
+
+[//]: # ( - disable시에 encode메서드들은 그대로 url을 반환&#40;원래값은 session값&#40;인코딩한&#41;을 포함&#41;)
+ - DefaultSecurityFilterChain에 기본 등록되지 않는다. 웹 자체에서 url에 session id값을 포함시켜서 보내는데 
+ - DisableEncodeUrlFilter를 addFilter를 통해 추가시키거나 .sessionManagement((manage) -> manage.disable()); 로 세션기능을 끄거나 2가지 방법이 있다.
