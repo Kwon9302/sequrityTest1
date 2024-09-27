@@ -25,3 +25,6 @@
 [//]: # ( - disable시에 encode메서드들은 그대로 url을 반환&#40;원래값은 session값&#40;인코딩한&#41;을 포함&#41;)
  - DefaultSecurityFilterChain에 기본 등록되지 않는다. 웹 자체에서 url에 session id값을 포함시켜서 보내는데 
  - DisableEncodeUrlFilter를 addFilter를 통해 추가시키거나 .sessionManagement((manage) -> manage.disable()); 로 세션기능을 끄거나 2가지 방법이 있다.
+
+### WebAsyncManagerIntegrationFilter
+ - 
