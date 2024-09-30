@@ -27,4 +27,7 @@
  - DisableEncodeUrlFilter를 addFilter를 통해 추가시키거나 .sessionManagement((manage) -> manage.disable()); 로 세션기능을 끄거나 2가지 방법이 있다.
 
 ### WebAsyncManagerIntegrationFilter
- - 
+ - 비동기 처리를 관리해주는 필터:
+ - WebAsyncMagerIntegrationFilter는 현재 쓰레드의 SecurityContext를 다룰 수 있는 SecurityContectCallableProcessingInterceptor를 WebAsyncManager에 등록만 진행한다.
+이후 서블릿단에서 WebAsyncManager을 통해 새로운 쓰레드에 SecurityContext를 복제한다.
+
