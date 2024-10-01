@@ -31,3 +31,6 @@
  - WebAsyncMagerIntegrationFilter는 현재 쓰레드의 SecurityContext를 다룰 수 있는 SecurityContectCallableProcessingInterceptor를 WebAsyncManager에 등록만 진행한다.
 이후 서블릿단에서 WebAsyncManager을 통해 새로운 쓰레드에 SecurityContext를 복제한다.
 
+### SecurityContextHolderRegistory
+### Header
+
