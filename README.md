@@ -26,11 +26,26 @@
  - DefaultSecurityFilterChain에 기본 등록되지 않는다. 웹 자체에서 url에 session id값을 포함시켜서 보내는데 
  - DisableEncodeUrlFilter를 addFilter를 통해 추가시키거나 .sessionManagement((manage) -> manage.disable()); 로 세션기능을 끄거나 2가지 방법이 있다.
 
-### WebAsyncManagerIntegrationFilter
+### WebAsyncManagerIntegrationFilter 1번째 등록
  - 비동기 처리를 관리해주는 필터:
  - WebAsyncMagerIntegrationFilter는 현재 쓰레드의 SecurityContext를 다룰 수 있는 SecurityContectCallableProcessingInterceptor를 WebAsyncManager에 등록만 진행한다.
 이후 서블릿단에서 WebAsyncManager을 통해 새로운 쓰레드에 SecurityContext를 복제한다.
 
-### SecurityContextHolderRegistory
-### Header
+### SecurityContextHolderPersistentFilter 2번째 등록
+ - session기반으로 작동하기 때문에 session.disable()을 하면 사용못함
+ - session에서 인증 정보를 가져와 securityContext를 복원한다.(하나의 요청이 완료되면 context가 초기화)
+
+### HeaderWriterFilter 4번째 등록
+ - HeaderWriterFilter로 디폴트로 추가되는 헤더
+ -  Key	설명
+ -  X-Content-Type-Options	컨텐츠 스니핑을 막기 위해 nosniff value를 할당해 서버에서 응답하는 Content-Type과 다른 타입일 경우 읽지 못하도록 설정
+ -  X-XSS-Protection	XSS 공격 감지시 로딩 금지 (0은 비활성화)
+ -  Cache-Control	이전에 받았던 데이터와 현재 보낼 데이터가 같다면 로딩에 대한 결정 여부
+ -  Pragma	HTTP/1.0 방식에서 사용하던 Cache-Control
+ -  Expires	서버에서 보낼 데이터를 브라우저에서 캐싱할 시간
+ -  X-Frame-Options	브라우저가 응답 데이터를 iframe, frame, embed, object 태그에서 로딩해도 되는 여부
+
+### CorsFIlter 4번째
+### CsrfFIlter 5번째
+ - 사용자의 의지와 무관하게 해커가 강제로 사용자의 브라우저를 통해 서버측으로 특정한 요청을 보내도록 공격하는 방법이다. 
 
