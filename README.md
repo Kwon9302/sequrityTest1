@@ -50,6 +50,14 @@
  - 사용자의 의지와 무관하게 해커가 강제로 사용자의 브라우저를 통해 서버측으로 특정한 요청을 보내도록 공격하는 방법이다. 
 ### LogoutFilter 6번째
 ### UsernamePasswordAuthenticationFilter 7번
-### DefaultLoginPageGeneratingFilter 8번
+### DefaultLoginPageGeneratingFilter + DefaultLogoutPageGeneratingFilter
+8,9번
  - 기본 로그인 페이지를 응답하는 역할을 수행한다. Get : "/login"
+ - 기본 사용
+   http
+   .formLogin(Customizer.withDefaults());
+
+ - 커스텀 하더라도 아래와 같이 loginPage() 메소드를 다루지 않으면 기본 로그인 페이지 활성
+   http
+   .formLogin((login) -> login.loginPage("/커스텀경로"));
 
