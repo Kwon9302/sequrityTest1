@@ -68,5 +68,6 @@
  - AnonymousAuthenticationFilter : Context값이 null일 경우 Anonymous값을 넣어준다.
  - ExceptionTranslationFilter : 이 필터 이후에 발생하는 인증, 인가 예외를 핸들링한다.
  - ExceptionTranslationFilter 필터 이전에 발생하는 예외의 경우 처리하지 못한다. 예외 처리는 호출한 필터가 진행할 수 있다.
-예를 들어 UsernamePasswordAuthenticationFilter는 ExceptionTranslationFilter 보다 앞에 존재하기 때문에 ExceptionTranslationFilter에서 처리할 수 없다.
+   예를 들어 UsernamePasswordAuthenticationFilter는 ExceptionTranslationFilter 보다 앞에 존재하기 때문에
+   ExceptionTranslationFilter에서 처리할 수 없다.
  - AuthorizationFilter : 인가 처리
